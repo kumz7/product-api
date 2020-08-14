@@ -12,6 +12,7 @@ import com.product.model.Ticket;
 import com.product.repository.CustomerRepository;
 import com.product.repository.MappingRepository;
 import com.product.service.CustomerService;
+import com.product.service.EngineerService;
 import com.product.service.EstimationService;
 import com.product.service.IssueService;
 import com.product.service.MappingService;
@@ -39,6 +40,8 @@ public class MappingServiceImpl implements MappingService {
 	@Autowired
 	ProductService productService;
 
+	@Autowired
+	EngineerService engineerService;
 	@Override
 	public Mapping storeMapping(Mapping mapping) {
 		// TODO Auto-generated method stub
@@ -50,13 +53,15 @@ public class MappingServiceImpl implements MappingService {
 			mapping.getTicket().setMapping(object.getTicket().getMapping());
 			mapping.getIssue().setMapping(object.getIssue().getMapping());
 			mapping.getEstimation().setMapping(object.getEstimation().getMapping());
-			mapping.getProduct().setMapping(object.getProduct().getMapping());  
+			mapping.getProduct().setMapping(object.getProduct().getMapping());
+			mapping.getEngineer().setMapping(object.getEngineer().getMapping());
 		}		
 		customerService.storeCustomer(mapping.getCustomer());
 		ticketService.storeTicket(mapping.getTicket());
 		issueService.storeIssue(mapping.getIssue());
 		estimationService.storeEstimation(mapping.getEstimation());
 		productService.storeProduct(mapping.getProduct());
+		engineerService.storeEngineer(mapping.getEngineer());
 
 		return repository.save(mapping); 
 	}
@@ -70,6 +75,7 @@ public class MappingServiceImpl implements MappingService {
 		object.getIssue().setMapping(null);
 		object.getTicket().setMapping(null);
 		object.getProduct().setMapping(null);
+		object.getEngineer().setMapping(null); 
 		return Optional.of(object); 
 	}
 
@@ -81,7 +87,8 @@ public class MappingServiceImpl implements MappingService {
 			object.getEstimation().setMapping(null);
 			object.getIssue().setMapping(null);
 			object.getTicket().setMapping(null);
-			object.getProduct().setMapping(null);			
+			object.getProduct().setMapping(null);		
+			object.getEngineer().setMapping(null); 
 		});
 		return list;
 	}

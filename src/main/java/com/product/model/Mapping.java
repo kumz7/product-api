@@ -52,5 +52,9 @@ public class Mapping implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_ticket", referencedColumnName = "id")
 	Ticket ticket;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_engineer", referencedColumnName = "id")
+	Engineer engineer;
 
 }
