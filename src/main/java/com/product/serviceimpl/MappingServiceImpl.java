@@ -62,23 +62,25 @@ public class MappingServiceImpl implements MappingService {
 		estimationService.storeEstimation(mapping.getEstimation());
 		productService.storeProduct(mapping.getProduct());
 		engineerService.storeEngineer(mapping.getEngineer());
-
-		return repository.save(mapping); 
+		Mapping object = repository.save(mapping);
+		return makeNull(object); 
 	}
 
 	@Override
 	public Optional<Mapping> fetchMappingById(Long id) {
 		//Avoid loop of death on linked list of mapping
 		Mapping object = repository.findById(id).get();
+		return Optional.of(makeNull(object));  
+	}
+	public Mapping makeNull(Mapping object){
 		object.getCustomer().setMapping(null);
 		object.getEstimation().setMapping(null);
 		object.getIssue().setMapping(null);
 		object.getTicket().setMapping(null);
 		object.getProduct().setMapping(null);
-		object.getEngineer().setMapping(null); 
-		return Optional.of(object); 
+		object.getEngineer().setMapping(null);
+		return object;
 	}
-
 	@Override
 	public List<Mapping> fetchMappingBySearch(String key) {
 		List<Mapping> list = repository.findByKey(key);

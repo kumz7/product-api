@@ -13,6 +13,8 @@ import com.product.model.Ticket;
 
 @Repository
 public interface TicketRepository extends CrudRepository<Ticket, Long> {
-
+	
+	@Query("select count(*) from Ticket where ticket like %:year% ")
+	public long countTicket(@Param("year") String year);
 	
 }

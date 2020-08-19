@@ -14,5 +14,5 @@ public interface TicketService {
 	public Ticket storeTicket(Ticket ticket);
 	public Optional<Ticket> fetchTicketById(Long id);
 	public void deleteTicketById(Long id);
-
+	public long countTicket(String year);
 }
