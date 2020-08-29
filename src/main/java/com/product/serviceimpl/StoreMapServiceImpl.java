@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.product.model.StoreMap;
@@ -37,8 +39,15 @@ public class StoreMapServiceImpl implements StoreMapService{
 	}
 
 	@Override
-	public void deleteStoreMapById(Long id) {
+	public boolean deleteStoreMapById(Long id) {
 		repository.deleteById(id);
+		return true;
 	}
+	@Override
+	public boolean isAdmin() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		String role = authentication.getAuthorities().toArray()[0].toString();
+		return role.equals("ROLE_ADMIN");
+	} 
 	
 }

@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.product.model.Mapping;
 import com.product.model.Ticket;
+import com.product.service.EmailService;
 import com.product.service.MappingService;
+import com.product.service.StoreMapService;
 import com.product.service.TicketService;
+import com.product.serviceimpl.EmailServiceImpl;
 
 
 @RestController
@@ -24,8 +27,11 @@ public class MappingController {
 	@Autowired
 	MappingService service;
 	
+	@Autowired
+	EmailService Eservice;
+	
 	@PostMapping
-	@RequestMapping("/mapping")
+	@RequestMapping("/mapping") 
 	public Mapping storeMapping(@RequestBody Mapping map) {
 		return service.storeMapping(map);
 	}
@@ -35,7 +41,7 @@ public class MappingController {
 	@GetMapping
 	@RequestMapping("/mapping/{id}")
 	public Optional<Mapping> fetch(@PathVariable Long id) { 
-		return service.fetchMappingById(id); 
+		return service.fetchMappingById(id);  
 	}
 	@GetMapping
 	@RequestMapping("/search/{key}")

@@ -14,6 +14,7 @@ import com.product.repository.MappingRepository;
 import com.product.service.CustomerService;
 import com.product.service.EngineerService;
 import com.product.service.EstimationService;
+import com.product.service.InvoiceService;
 import com.product.service.IssueService;
 import com.product.service.MappingService;
 import com.product.service.ProductService;
@@ -41,6 +42,9 @@ public class MappingServiceImpl implements MappingService {
 	ProductService productService;
 
 	@Autowired
+	InvoiceService invoiceService;
+
+	@Autowired
 	EngineerService engineerService;
 	@Override
 	public Mapping storeMapping(Mapping mapping) {
@@ -55,6 +59,7 @@ public class MappingServiceImpl implements MappingService {
 			mapping.getEstimation().setMapping(object.getEstimation().getMapping());
 			mapping.getProduct().setMapping(object.getProduct().getMapping());
 			mapping.getEngineer().setMapping(object.getEngineer().getMapping());
+			mapping.getInvoice().setMapping(object.getInvoice().getMapping());
 		}		
 		customerService.storeCustomer(mapping.getCustomer());
 		ticketService.storeTicket(mapping.getTicket());
@@ -62,6 +67,7 @@ public class MappingServiceImpl implements MappingService {
 		estimationService.storeEstimation(mapping.getEstimation());
 		productService.storeProduct(mapping.getProduct());
 		engineerService.storeEngineer(mapping.getEngineer());
+		invoiceService.storeInvoice(mapping.getInvoice());
 		Mapping object = repository.save(mapping);
 		return makeNull(object); 
 	}
@@ -79,6 +85,7 @@ public class MappingServiceImpl implements MappingService {
 		object.getTicket().setMapping(null);
 		object.getProduct().setMapping(null);
 		object.getEngineer().setMapping(null);
+		object.getInvoice().setMapping(null); 
 		return object;
 	}
 	@Override
@@ -90,7 +97,8 @@ public class MappingServiceImpl implements MappingService {
 			object.getIssue().setMapping(null);
 			object.getTicket().setMapping(null);
 			object.getProduct().setMapping(null);		
-			object.getEngineer().setMapping(null); 
+			object.getEngineer().setMapping(null);
+			object.getInvoice().setMapping(null); 
 		});
 		return list;
 	}

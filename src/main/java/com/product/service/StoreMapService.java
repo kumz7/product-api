@@ -10,7 +10,7 @@ public interface StoreMapService {
 	public Optional<StoreMap> fetchStoreMapById(Long id);
 	public Iterable<StoreMap> fetchStoreMapAll();
 	public Optional<List<StoreMap>> fetchStoreMapByCategory(String key);
-	public void deleteStoreMapById(Long id);
-	
+	public boolean deleteStoreMapById(Long id);
+	public boolean isAdmin();
 }
 
