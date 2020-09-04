@@ -30,15 +30,11 @@ public class TicketServiceImpl implements TicketService{
 
 		Calendar calendar = new GregorianCalendar();
 		if(Ticket.getTicket()== null || Ticket.getTicket().trim().isEmpty()) {
-			//ticket date
-//			LocalDateTime myDateObj = LocalDateTime.now();
-//		    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//		    String formattedDate = myDateObj.format(myFormatObj);
-//		    Ticket.setDate(formattedDate);
-			//ticket info
 			String year = ""+calendar.get(calendar.YEAR);
-			long tkt = countTicket(year);
-			Ticket.setTicket("TKT"+tkt+year);
+			long tkt = countTicket("MSR/"+year.substring(0, 2))+1;
+			int len = (""+tkt).length();
+			String prefix = len==1?"000":len==2?"00":len==3?"0":"";	
+			Ticket.setTicket("MSR/"+year.substring(0, 2)+"/"+prefix+tkt);
 		}
 		return repository.save(Ticket);
 	} 

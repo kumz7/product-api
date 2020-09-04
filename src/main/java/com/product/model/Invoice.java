@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -34,11 +35,14 @@ public class Invoice implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	long id;
+	String invoice_no;
 	//_description,_qty,_unit_price,_discount,_total,
 	String[][] fields;
-	String sub_total,total_rate,sales_tax,others,total,date; 
-
+	String sub_total,total_rate,sales_tax,others,total,date;
+	
+	
 	@OneToOne(mappedBy = "invoice")
+	@ToString.Exclude
     private Mapping mapping; 
 
 

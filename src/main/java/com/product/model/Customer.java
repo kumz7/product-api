@@ -23,6 +23,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -38,8 +39,8 @@ public class Customer implements Serializable{
 	String mail;
 	String contact;
 	String altcontact;
-
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="customer",orphanRemoval = true)
+	 @ToString.Exclude
     private List<Mapping> mapping; 
 
 

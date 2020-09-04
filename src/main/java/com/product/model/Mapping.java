@@ -1,6 +1,8 @@
 package com.product.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,7 +36,7 @@ public class Mapping implements Serializable{
 	long id;
 	
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	@JoinColumn(name="fk_customer", nullable=true)
 	Customer customer;
 	
@@ -53,9 +56,9 @@ public class Mapping implements Serializable{
     @JoinColumn(name = "fk_ticket", referencedColumnName = "id")
 	Ticket ticket;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_engineer", referencedColumnName = "id")
-	Engineer engineer;
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name = "mapping_id") 
+	List<Engineer> engineer;  
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_invoice", referencedColumnName = "id")

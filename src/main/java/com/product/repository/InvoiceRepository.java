@@ -17,5 +17,7 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
 	
 //	@Query("select count(*) from Ticket where ticket like %:year% ")
 //	public long countTicket(@Param("year") String year);
+	@Query("select count(*) from Invoice where invoice_no like %:year% ")
+	public long countInvoice(@Param("year") String year);
 	
 }

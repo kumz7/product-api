@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +32,21 @@ public class MappingController {
 	EmailService Eservice;
 	
 	@PostMapping
-	@RequestMapping("/mapping") 
+	@RequestMapping("/mapping")
 	public Mapping storeMapping(@RequestBody Mapping map) {
-		return service.storeMapping(map);
+		return makeNull(service.storeMapping(map));
+	}
+	public Mapping makeNull(Mapping object){
+		object.getCustomer().setMapping(null); 
+		object.getEstimation().setMapping(null);
+		object.getIssue().setMapping(null);
+		object.getTicket().setMapping(null);
+		object.getProduct().setMapping(null);
+		object.getEngineer().forEach(data->{
+			data.setMapping(null); 
+		});
+		object.getInvoice().setMapping(null); 
+		return object;
 	}
 	/*
 	 * Key may contain name/number/ticket id

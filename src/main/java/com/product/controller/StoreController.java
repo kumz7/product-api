@@ -41,9 +41,9 @@ public class StoreController {
 		return (service.isAdmin());
 	}
   	@PostMapping
-	@RequestMapping("/sentEmail")
-	public boolean sentMail(@RequestBody String image) {
-  		Document document = new Document(PageSize.A4, 20.0f, 20.0f, 20.0f, 150.0f);
+	@RequestMapping("/sentEmail/{username}/{useremail}")
+	public boolean sentMail(@PathVariable String username,@PathVariable String useremail,@RequestBody String image) {
+  		Document document = new Document(PageSize.A4, 20.0f, 20.0f, 20.0f, 150.0f);  
   		String output = "Invoice.pdf";
   		try {
             PdfWriter.getInstance(document, new FileOutputStream(output));
@@ -65,7 +65,7 @@ public class StoreController {
 		String auth = StoreService.fetchStoreMapByCategory("mail.smtp.auth").get().get(0).getValue();
 		String tls = StoreService.fetchStoreMapByCategory("mail.smtp.starttls.enable").get().get(0).getValue();
 		//map.getCustomer().getMail().toString().trim()
-		return Eservice.sentEmail(host	,port , Boolean.parseBoolean(auth), Boolean.parseBoolean(tls), email, password, "kuaranmani92@gmail.com", "Regd: Invoice (MSR Info Tech)", "Dear Customer "+" greetings, ");
+		return Eservice.sentEmail(host	,port , Boolean.parseBoolean(auth), Boolean.parseBoolean(tls), email, password, useremail, "Regd: Invoice (MSR Info Tech)", "Dear Customer "+username+" greetings, ");
 	}
 	@PostMapping
 	@RequestMapping("/options")

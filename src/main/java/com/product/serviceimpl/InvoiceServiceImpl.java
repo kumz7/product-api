@@ -26,13 +26,22 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 	@Override
 	public Invoice storeInvoice(Invoice invoice) {
-		
+		Calendar calendar = new GregorianCalendar();
+		if(!invoice.getDate().isEmpty()&& invoice.getInvoice_no()==null) {  
+			String year = ""+calendar.get(calendar.YEAR);
+			long tkt = countInvoice("MSR/SI/"+year.substring(0, 2))+1;
+			int len = (""+(tkt)).length();
+			String prefix = len==1?"000":len==2?"00":len==3?"0":"";	
+			invoice.setInvoice_no(("MSR/SI/"+year.substring(0, 2)+"/"+prefix+tkt));
+		}
 		return repository.save(invoice); 
 	}
-
+	private long countInvoice(String search){
+		return repository.countInvoice(search); 
+	}
 	@Override
 	public Optional<Invoice> fetchInvoiceById(Long id) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		return null;
 	}
 

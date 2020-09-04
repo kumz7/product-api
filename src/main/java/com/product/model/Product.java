@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -31,7 +32,9 @@ public class Product implements Serializable{
 	String serial_no;
 	String battery_serial_no;
 	String other_detail;
+
 	@OneToOne(mappedBy = "product")
+	 @ToString.Exclude
     private Mapping mapping;
 	
 }

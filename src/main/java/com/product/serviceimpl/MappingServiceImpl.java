@@ -1,12 +1,15 @@
 package com.product.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.product.model.Customer;
+import com.product.model.Engineer;
 import com.product.model.Mapping;
 import com.product.model.Ticket;
 import com.product.repository.CustomerRepository;
@@ -45,31 +48,41 @@ public class MappingServiceImpl implements MappingService {
 	InvoiceService invoiceService;
 
 	@Autowired
-	EngineerService engineerService;
+	EngineerService engineerServicer;
 	@Override
+	@Transactional
 	public Mapping storeMapping(Mapping mapping) {
 		// TODO Auto-generated method stub
 		Optional<Mapping> checkIf = repository.findById(mapping.getId());
 		
 		if(checkIf.isPresent()) {
-			Mapping object = checkIf.get(); 
-			mapping.getCustomer().setMapping(object.getCustomer().getMapping());
-			mapping.getTicket().setMapping(object.getTicket().getMapping());
-			mapping.getIssue().setMapping(object.getIssue().getMapping());
-			mapping.getEstimation().setMapping(object.getEstimation().getMapping());
-			mapping.getProduct().setMapping(object.getProduct().getMapping());
-			mapping.getEngineer().setMapping(object.getEngineer().getMapping());
-			mapping.getInvoice().setMapping(object.getInvoice().getMapping());
-		}		
-		customerService.storeCustomer(mapping.getCustomer());
-		ticketService.storeTicket(mapping.getTicket());
-		issueService.storeIssue(mapping.getIssue());
-		estimationService.storeEstimation(mapping.getEstimation());
-		productService.storeProduct(mapping.getProduct());
-		engineerService.storeEngineer(mapping.getEngineer());
-		invoiceService.storeInvoice(mapping.getInvoice());
+			Mapping map = checkIf.get();
+			mapping.getCustomer().setMapping(map.getCustomer().getMapping());
+			mapping.getTicket().setMapping(map.getTicket().getMapping());
+			mapping.getIssue().setMapping(map.getIssue().getMapping());
+			mapping.getEstimation().setMapping(map.getEstimation().getMapping());
+			mapping.getProduct().setMapping(map.getProduct().getMapping());
+			mapping.getInvoice().setMapping(map.getInvoice().getMapping());
+			
+			customerService.storeCustomer(mapping.getCustomer());   
+			ticketService.storeTicket(mapping.getTicket());   
+			issueService.storeIssue(mapping.getIssue());  
+			estimationService.storeEstimation(mapping.getEstimation());    
+			productService.storeProduct(mapping.getProduct());  
+			invoiceService.storeInvoice(mapping.getInvoice());
+			ArrayList<Engineer> list = new ArrayList<>(mapping.getEngineer());
+			synchronized (map) {
+				//engineerServicer.storeEngineer(mapping.getEngineer().get(mapping.getEngineer().size()-1), map);
+				map = repository.findById(mapping.getId()).get();
+				map.getEngineer().add(mapping.getEngineer().get(mapping.getEngineer().size()-1));
+				repository.save(map);
+			}
+			  
+			return map;
+		}
+		customerService.storeCustomer(mapping.getCustomer()); 
 		Mapping object = repository.save(mapping);
-		return makeNull(object); 
+		return object;
 	}
 
 	@Override
@@ -84,7 +97,9 @@ public class MappingServiceImpl implements MappingService {
 		object.getIssue().setMapping(null);
 		object.getTicket().setMapping(null);
 		object.getProduct().setMapping(null);
-		object.getEngineer().setMapping(null);
+		object.getEngineer().forEach(data->{
+			data.setMapping(null); 
+		});
 		object.getInvoice().setMapping(null); 
 		return object;
 	}
@@ -97,7 +112,9 @@ public class MappingServiceImpl implements MappingService {
 			object.getIssue().setMapping(null);
 			object.getTicket().setMapping(null);
 			object.getProduct().setMapping(null);		
-			object.getEngineer().setMapping(null);
+			object.getEngineer().forEach(data->{
+				data.setMapping(null);
+			});
 			object.getInvoice().setMapping(null); 
 		});
 		return list;
