@@ -72,9 +72,9 @@ public class MappingServiceImpl implements MappingService {
 			invoiceService.storeInvoice(mapping.getInvoice());
 			ArrayList<Engineer> list = new ArrayList<>(mapping.getEngineer());
 			synchronized (map) {
-				//engineerServicer.storeEngineer(mapping.getEngineer().get(mapping.getEngineer().size()-1), map);
 				map = repository.findById(mapping.getId()).get();
-				map.getEngineer().add(mapping.getEngineer().get(mapping.getEngineer().size()-1));
+				map.getEngineer().clear();
+				map.getEngineer().addAll(mapping.getEngineer());
 				repository.save(map);
 			}
 			  
@@ -105,6 +105,7 @@ public class MappingServiceImpl implements MappingService {
 	}
 	@Override
 	public List<Mapping> fetchMappingBySearch(String key) {
+			key = key.toLowerCase();
 		List<Mapping> list = repository.findByKey(key);
 		list.forEach(object->{
 			object.getCustomer().setMapping(null);

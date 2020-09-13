@@ -28,17 +28,25 @@ public class TicketServiceImpl implements TicketService{
 	@Override
 	public Ticket storeTicket(Ticket Ticket) {
 
-		Calendar calendar = new GregorianCalendar();
-		if(Ticket.getTicket()== null || Ticket.getTicket().trim().isEmpty()) {
-			String year = ""+calendar.get(calendar.YEAR);
-			long tkt = countTicket("MSR/"+year.substring(0, 2))+1;
-			int len = (""+tkt).length();
-			String prefix = len==1?"000":len==2?"00":len==3?"0":"";	
-			Ticket.setTicket("MSR/"+year.substring(0, 2)+"/"+prefix+tkt);
-		}
+//		Calendar calendar = new GregorianCalendar();
+//		if(Ticket.getTicket()== null || Ticket.getTicket().trim().isEmpty()) {
+//			String year = ""+calendar.get(calendar.YEAR);
+//			long tkt = countTicket("MSR/"+year.substring(0, 2))+1;
+//			int len = (""+tkt).length();
+//			String prefix = len==1?"000":len==2?"00":len==3?"0":"";	
+//			Ticket.setTicket("MSR/"+year.substring(0, 2)+"/"+prefix+tkt);
+//		}
 		return repository.save(Ticket);
 	} 
-
+	@Override
+	public String getTicket() {
+		Calendar calendar = new GregorianCalendar();
+		String year = ""+calendar.get(calendar.YEAR);
+		long tkt = countTicket("MSR/"+year.substring(0, 2))+1;
+		int len = (""+tkt).length();
+		String prefix = len==1?"000":len==2?"00":len==3?"0":"";	
+		return "MSR/"+year.substring(0, 2)+"/"+prefix+tkt;
+	}
 	@Override
 	public Optional<Ticket> fetchTicketById(Long id) {
  		return repository.findById(id);

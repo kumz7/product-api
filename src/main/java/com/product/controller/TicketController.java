@@ -34,4 +34,9 @@ public class TicketController {
 	public Optional<Ticket> fetch(@PathVariable Long id) { 
 		return service.fetchTicketById(id); 
 	}
+	@GetMapping
+	@RequestMapping("/ticketno")
+	public String getTicketNo() {
+		return service.getTicket();
+	}
 }

@@ -14,7 +14,7 @@ import com.product.model.Ticket;
 
 @Repository
 public interface MappingRepository extends CrudRepository<Mapping, Long> {
-	@Query("from Mapping where customer.contact like %:key% or customer.name like %:key% or ticket.ticket like %:key%")
+	@Query("from Mapping where LOWER(customer.contact) like %:key% or LOWER(customer.name) like %:key% or ticket.ticket like %:key%")
 	public List<Mapping> findByKey(@Param("key") String key);
 	
 
